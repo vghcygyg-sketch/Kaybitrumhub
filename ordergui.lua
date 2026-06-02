@@ -128,24 +128,4 @@ btn.MouseButton1Click:Connect(function()
         gui:Destroy()
     end)
 
-end)	done.MouseButton1Click:Connect(function()
-
-		info.Text =
-			"👤 "..acc..
-			"\n📌 "..don..
-			"\n✅ Đơn đã hoàn thành"
-
-		done.Text = "✓ DONE"
-		done.BackgroundColor3 = Color3.fromRGB(70,70,70)
-		done.Active = false
-
-		task.wait(2)
-
-		player:Kick("Đơn đã hoàn thành")
-	end)
-
-	close.MouseButton1Click:Connect(function()
-		gui:Destroy()
-	end)
-
 end)
