@@ -114,8 +114,8 @@ btn.MouseButton1Click:Connect(function()
     info.TextColor3 = Color3.new(1,1,1)
     info.Font = Enum.Font.GothamBold
     info.TextScaled = false
-    info.Textsize = 14
-    info.TextWrapped
+    info.TextSize = 14
+    info.TextWrapped = true
     info.Text = "👤 " .. acc .. "\n📌 " .. don
 
     local close = Instance.new("TextButton")
