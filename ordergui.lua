@@ -127,5 +127,25 @@ btn.MouseButton1Click:Connect(function()
     close.MouseButton1Click:Connect(function()
         gui:Destroy()
     end)
+    local done = Instance.new("TextButton")
+    done.Parent = mini
+    done.Size = UDim2.new(0,80,0,25)
+    done.Position = UDim2.new(0.5,-40,1,-30)
+    done.BackgroundColor3 =         Color3.fromRGB(0,200,0)
+    done.TextColor3 = Color3.new(1,1,1)
+    done.Font = Enum.Font.GothamBold
+    done.TextScaled = true
+    done.Text = "DONE"
 
+    local doneCorner =    Instance.new("UICorner")
+    doneCorner.Parent = done
+
+    done.MouseButton1Click:Connect(function()
+    done.Text = "HOÀN THÀNH ✓"
+    done.Active = false
+
+    task.wait(3)
+
+       game:GetService("Players").LocalPlayer:Kick("Đơn hàng đã hoàn thành")
+     end)
 end)
