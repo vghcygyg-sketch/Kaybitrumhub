@@ -84,7 +84,7 @@ btn.MouseButton1Click:Connect(function()
 
     local mini = Instance.new("Frame")
     mini.Parent = gui
-    mini.Size = UDim2.new(0,280,0,90)
+    mini.Size = UDim2.new(0,280,0,110)
     mini.Position = UDim2.new(1,-300,0,20)
     mini.BackgroundColor3 = Color3.fromRGB(15,15,15)
 
@@ -108,13 +108,14 @@ btn.MouseButton1Click:Connect(function()
 
     local info = Instance.new("TextLabel")
     info.Parent = mini
-    info.Size = UDim2.new(1,-10,1,35)
+    info.Size = UDim2.new(1,-10,0,35)
     info.Position = UDim2.new(0,5,0,25)
     info.BackgroundTransparency = 1
     info.TextColor3 = Color3.new(1,1,1)
     info.Font = Enum.Font.GothamBold
-    info.TextScaled = true
-    info.Textsize = 16
+    info.TextScaled = false
+    info.Textsize = 14
+    info.TextWrapped
     info.Text = "👤 " .. acc .. "\n📌 " .. don
 
     local close = Instance.new("TextButton")
@@ -131,7 +132,7 @@ btn.MouseButton1Click:Connect(function()
     local done = Instance.new("TextButton")
     done.Parent = mini
     done.Size = UDim2.new(0,80,0,25)
-    done.Position = UDim2.new(0.5,-40,0,55)
+    done.Position = UDim2.new(0.5,-40,0,70)
     done.BackgroundColor3 =         Color3.fromRGB(0,200,0)
     done.TextColor3 = Color3.new(1,1,1)
     done.Font = Enum.Font.GothamBold
