@@ -3,7 +3,10 @@ local CoreGui = game:GetService("CoreGui")
 local player = Players.LocalPlayer
 
 pcall(function()
-	CoreGui.NameDonUI:Destroy()
+	local old = CoreGui:FindFirstChild("NameDonUI")
+	if old then
+		old:Destroy()
+	end
 end)
 
 local LAST_ACC_FILE = "LastAccount.txt"
@@ -52,22 +55,13 @@ gui.Name = "NameDonUI"
 gui.ResetOnSpawn = false
 gui.Parent = CoreGui
 
-local topLabel = Instance.new("TextLabel")
-topLabel.Parent = gui
-topLabel.Size = UDim2.new(0,450,0,35)
-topLabel.Position = UDim2.new(0.5,-225,0,10)
-topLabel.BackgroundTransparency = 1
-topLabel.Text = "✨ ĐƠN HÀNG SHOP KAYBI ✨"
-topLabel.Font = Enum.Font.GothamBold
-topLabel.TextSize = 22
-topLabel.TextColor3 = Color3.fromRGB(255,215,0)
-
 local frame = Instance.new("Frame")
 frame.Parent = gui
-frame.Size = UDim2.new(0,350,0,190)
-frame.Position = UDim2.new(0.5,-175,0,55)
-frame.BackgroundColor3 = Color3.fromRGB(0,0,0)
-frame.BackgroundTransparency = 0.25
+frame.AnchorPoint = Vector2.new(0.5,0)
+frame.Position = UDim2.new(0.5,0,0,60)
+frame.Size = UDim2.new(0,420,0,140)
+frame.BackgroundColor3 = Color3.fromRGB(10,10,10)
+frame.BackgroundTransparency = 0.2
 frame.BorderSizePixel = 0
 
 local stroke = Instance.new("UIStroke")
@@ -79,20 +73,20 @@ local title = Instance.new("TextLabel")
 title.Parent = frame
 title.Size = UDim2.new(1,0,0,35)
 title.BackgroundTransparency = 1
-title.Text = "NAME ĐƠN"
+title.Text = ""
 title.Font = Enum.Font.GothamBold
 title.TextSize = 22
-title.TextColor3 = Color3.fromRGB(255,255,255)
+title.TextColor3 = Color3.fromRGB(255,215,0)
 
 local textbox = Instance.new("TextBox")
 textbox.Parent = frame
 textbox.Size = UDim2.new(0.8,0,0,35)
-textbox.Position = UDim2.new(0.1,0,0,50)
+textbox.Position = UDim2.new(0.1,0,0,45)
 textbox.BackgroundColor3 = Color3.fromRGB(25,25,25)
 textbox.TextColor3 = Color3.fromRGB(255,255,255)
 textbox.PlaceholderText = "Nhập tên đơn..."
 textbox.Text = LoadNameDon()
-textbox.Font = Enum.Font.Gotham
+textbox.Font = Enum.Font.GothamBold
 textbox.TextSize = 18
 
 local boxStroke = Instance.new("UIStroke")
@@ -101,8 +95,8 @@ boxStroke.Color = Color3.fromRGB(255,215,0)
 
 local ok = Instance.new("TextButton")
 ok.Parent = frame
-ok.Size = UDim2.new(0.4,0,0,35)
-ok.Position = UDim2.new(0.3,0,0,95)
+ok.Size = UDim2.new(0.35,0,0,30)
+ok.Position = UDim2.new(0.325,0,0,88)
 ok.Text = "OK"
 ok.Font = Enum.Font.GothamBold
 ok.TextSize = 18
@@ -111,15 +105,16 @@ ok.TextColor3 = Color3.fromRGB(0,0,0)
 
 local result = Instance.new("TextLabel")
 result.Parent = frame
-result.Size = UDim2.new(1,0,0,60)
-result.Position = UDim2.new(0,0,0,125)
+result.Size = UDim2.new(1,0,0,85)
+result.Position = UDim2.new(0,0,0,45)
 result.BackgroundTransparency = 1
 result.TextWrapped = true
 result.Font = Enum.Font.GothamBold
-result.TextSize = 24
+result.TextSize = 28
 result.TextColor3 = Color3.fromRGB(255,255,255)
+result.Text = ""
 
-local function ShowData()
+local function ShowSaved()
 	local tenDon = LoadNameDon()
 
 	if tenDon ~= "" then
@@ -129,7 +124,7 @@ local function ShowData()
 	end
 end
 
-ShowData()
+ShowSaved()
 
 ok.MouseButton1Click:Connect(function()
 	local tenDon = textbox.Text
