@@ -3,61 +3,145 @@ local CoreGui = game:GetService("CoreGui")
 local player = Players.LocalPlayer
 
 pcall(function()
-    CoreGui.NameDonUI:Destroy()
+	CoreGui.NameDonUI:Destroy()
 end)
+
+local LAST_ACC_FILE = "LastAccount.txt"
+local currentUserId = tostring(player.UserId)
+
+if readfile and writefile and isfile and delfile then
+	if isfile(LAST_ACC_FILE) then
+		local lastUserId = readfile(LAST_ACC_FILE)
+
+		if lastUserId ~= currentUserId then
+			local oldFile = "NameDon_" .. lastUserId .. ".txt"
+
+			if isfile(oldFile) then
+				delfile(oldFile)
+			end
+		end
+	end
+
+	writefile(LAST_ACC_FILE, currentUserId)
+end
+
+local SAVE_FILE = "NameDon_" .. currentUserId .. ".txt"
+
+local function SaveNameDon(text)
+	if writefile then
+		writefile(SAVE_FILE, text)
+	end
+end
+
+local function LoadNameDon()
+	if readfile and isfile and isfile(SAVE_FILE) then
+		return readfile(SAVE_FILE)
+	end
+	return ""
+end
+
+local function HideName(name)
+	if #name > 3 then
+		return string.sub(name,1,3) .. "***"
+	end
+	return name
+end
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "NameDonUI"
 gui.ResetOnSpawn = false
 gui.Parent = CoreGui
 
+local topLabel = Instance.new("TextLabel")
+topLabel.Parent = gui
+topLabel.Size = UDim2.new(0,450,0,35)
+topLabel.Position = UDim2.new(0.5,-225,0,10)
+topLabel.BackgroundTransparency = 1
+topLabel.Text = "✨ ĐƠN HÀNG SHOP KAYBI ✨"
+topLabel.Font = Enum.Font.GothamBold
+topLabel.TextSize = 22
+topLabel.TextColor3 = Color3.fromRGB(255,215,0)
+
 local frame = Instance.new("Frame")
 frame.Parent = gui
-frame.AnchorPoint = Vector2.new(0.5,0.5)
-frame.Position = UDim2.new(0.5,0,0.5,0)
-frame.Size = UDim2.new(0,300,0,80)
+frame.Size = UDim2.new(0,350,0,190)
+frame.Position = UDim2.new(0.5,-175,0,55)
 frame.BackgroundColor3 = Color3.fromRGB(0,0,0)
 frame.BackgroundTransparency = 0.25
-frame.BorderSizePixel = 3
-frame.BorderColor3 = Color3.fromRGB(255,215,0)
-
-local corner = Instance.new("UICorner")
-corner.CornerRadius = UDim.new(0,0)
-corner.Parent = frame
+frame.BorderSizePixel = 0
 
 local stroke = Instance.new("UIStroke")
 stroke.Parent = frame
-stroke.Color = Color3.fromRGB(255,215,0)
-stroke.Thickness = 2
+stroke.Color = Color3.fromRGB(170,0,255)
+stroke.Thickness = 3
 
 local title = Instance.new("TextLabel")
 title.Parent = frame
-title.Size = UDim2.new(1,0,0,25)
+title.Size = UDim2.new(1,0,0,35)
 title.BackgroundTransparency = 1
 title.Text = "NAME ĐƠN"
 title.Font = Enum.Font.GothamBold
-title.TextSize = 18
-title.TextColor3 = Color3.fromRGB(255,215,0)
+title.TextSize = 22
+title.TextColor3 = Color3.fromRGB(255,255,255)
 
-local nameLabel = Instance.new("TextLabel")
-nameLabel.Parent = frame
-nameLabel.Position = UDim2.new(0,0,0,25)
-nameLabel.Size = UDim2.new(1,0,1,-25)
-nameLabel.BackgroundTransparency = 1
-nameLabel.Font = Enum.Font.GothamBold
-nameLabel.TextScaled = true
-nameLabel.TextColor3 = Color3.fromRGB(255,255,255)
+local textbox = Instance.new("TextBox")
+textbox.Parent = frame
+textbox.Size = UDim2.new(0.8,0,0,35)
+textbox.Position = UDim2.new(0.1,0,0,50)
+textbox.BackgroundColor3 = Color3.fromRGB(25,25,25)
+textbox.TextColor3 = Color3.fromRGB(255,255,255)
+textbox.PlaceholderText = "Nhập tên đơn..."
+textbox.Text = LoadNameDon()
+textbox.Font = Enum.Font.Gotham
+textbox.TextSize = 18
 
-local function UpdateName()
-	local name = player.Name
+local boxStroke = Instance.new("UIStroke")
+boxStroke.Parent = textbox
+boxStroke.Color = Color3.fromRGB(255,215,0)
 
-	if #name > 3 then
-		nameLabel.Text = string.sub(name,1,3) .. "***"
-	else
-		nameLabel.Text = name
+local ok = Instance.new("TextButton")
+ok.Parent = frame
+ok.Size = UDim2.new(0.4,0,0,35)
+ok.Position = UDim2.new(0.3,0,0,95)
+ok.Text = "OK"
+ok.Font = Enum.Font.GothamBold
+ok.TextSize = 18
+ok.BackgroundColor3 = Color3.fromRGB(255,215,0)
+ok.TextColor3 = Color3.fromRGB(0,0,0)
+
+local result = Instance.new("TextLabel")
+result.Parent = frame
+result.Size = UDim2.new(1,0,0,60)
+result.Position = UDim2.new(0,0,0,125)
+result.BackgroundTransparency = 1
+result.TextWrapped = true
+result.Font = Enum.Font.GothamBold
+result.TextSize = 24
+result.TextColor3 = Color3.fromRGB(255,255,255)
+
+local function ShowData()
+	local tenDon = LoadNameDon()
+
+	if tenDon ~= "" then
+		result.Text = tenDon .. "\n" .. HideName(player.Name)
+		textbox.Visible = false
+		ok.Visible = false
 	end
 end
 
-UpdateName()
+ShowData()
 
-player:GetPropertyChangedSignal("Name"):Connect(UpdateName)
+ok.MouseButton1Click:Connect(function()
+	local tenDon = textbox.Text
+
+	if tenDon == "" then
+		return
+	end
+
+	SaveNameDon(tenDon)
+
+	result.Text = tenDon .. "\n" .. HideName(player.Name)
+
+	textbox.Visible = false
+	ok.Visible = false
+end)
