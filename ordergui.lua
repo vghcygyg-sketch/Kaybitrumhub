@@ -1,5 +1,6 @@
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
+
 local player = Players.LocalPlayer
 
 pcall(function()
@@ -9,177 +10,97 @@ pcall(function()
 	end
 end)
 
-local LAST_ACC_FILE = "LastAccount.txt"
-local currentUserId = tostring(player.UserId)
-
-if readfile and writefile and isfile and delfile then
-	if isfile(LAST_ACC_FILE) then
-		local lastUserId = readfile(LAST_ACC_FILE)
-
-		if lastUserId ~= currentUserId then
-			local oldFile = "NameDon_" .. lastUserId .. ".txt"
-
-			if isfile(oldFile) then
-				delfile(oldFile)
-			end
-		end
-	end
-
-	writefile(LAST_ACC_FILE, currentUserId)
-end
-
-local SAVE_FILE = "NameDon_" .. currentUserId .. ".txt"
-
-local function SaveNameDon(text)
-	if writefile then
-		writefile(SAVE_FILE, text)
-	end
-end
-
-local function LoadNameDon()
-	if readfile and isfile and isfile(SAVE_FILE) then
-		return readfile(SAVE_FILE)
-	end
-	return ""
-end
-
-local function HideName(name)
-	if #name > 3 then
-		return string.sub(name,1,3) .. "***"
-	end
-	return name
-end
-
 local gui = Instance.new("ScreenGui")
 gui.Name = "NameDonUI"
 gui.ResetOnSpawn = false
 gui.Parent = CoreGui
 
+-- Khung nhập tên đơn
 local frame = Instance.new("Frame")
 frame.Parent = gui
-frame.AnchorPoint = Vector2.new(0.5,0)
-frame.Position = UDim2.new(0.5,0,0,10)
-frame.Size = UDim2.new(0,260,0,65)
+frame.Size = UDim2.new(0,280,0,140)
+frame.Position = UDim2.new(0.5,-140,0.5,-70)
 frame.BackgroundColor3 = Color3.fromRGB(15,15,15)
-frame.BackgroundTransparency = 0.3
+frame.BackgroundTransparency = 0.1
 frame.BorderSizePixel = 0
 
-local corner = Instance.new("UICorner")
-corner.Parent = frame
-corner.CornerRadius = UDim.new(0,8)
+local corner = Instance.new("UICorner", frame)
+corner.CornerRadius = UDim.new(0,10)
 
-local stroke = Instance.new("UIStroke")
-stroke.Parent = frame
+local stroke = Instance.new("UIStroke", frame)
 stroke.Color = Color3.fromRGB(255,215,0)
 stroke.Thickness = 2
 
-local icon = Instance.new("ImageLabel")
-icon.Parent = frame
-icon.BackgroundTransparency = 1
-icon.Size = UDim2.new(0,30,0,30)
-icon.Position = UDim2.new(0,10,0.5,-15)
-icon.Image = "rbxassetid://6031094678"
-
 local title = Instance.new("TextLabel")
 title.Parent = frame
+title.Size = UDim2.new(1,0,0,30)
 title.BackgroundTransparency = 1
-title.Position = UDim2.new(0,45,0,2)
-title.Size = UDim2.new(1,-80,0,20)
-title.Text = "⚡ SHOP KAYBI"
-title.Font = Enum.Font.GothamBold
-title.TextSize = 15
+title.Text = "NAME ĐƠN"
 title.TextColor3 = Color3.fromRGB(255,215,0)
-title.TextXAlignment = Enum.TextXAlignment.Left
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
 
-local edit = Instance.new("TextButton")
-edit.Parent = frame
-edit.Size = UDim2.new(0,25,0,25)
-edit.Position = UDim2.new(1,-30,0,5)
-edit.Text = "✏️"
-edit.Font = Enum.Font.GothamBold
-edit.TextSize = 14
-edit.BackgroundTransparency = 1
-edit.TextColor3 = Color3.fromRGB(255,215,0)
+local box = Instance.new("TextBox")
+box.Parent = frame
+box.Size = UDim2.new(0.85,0,0,35)
+box.Position = UDim2.new(0.075,0,0,45)
+box.BackgroundColor3 = Color3.fromRGB(25,25,25)
+box.TextColor3 = Color3.fromRGB(255,255,255)
+box.PlaceholderText = "Nhập tên đơn..."
+box.Font = Enum.Font.Gotham
+box.TextScaled = true
 
-local textbox = Instance.new("TextBox")
-textbox.Parent = frame
-textbox.Size = UDim2.new(0,180,0,25)
-textbox.Position = UDim2.new(0,45,0,22)
-textbox.BackgroundColor3 = Color3.fromRGB(25,25,25)
-textbox.TextColor3 = Color3.fromRGB(255,255,255)
-textbox.PlaceholderText = "Nhập tên đơn..."
-textbox.Text = LoadNameDon()
-textbox.Font = Enum.Font.GothamBold
-textbox.TextSize = 14
-
-local boxCorner = Instance.new("UICorner")
-boxCorner.Parent = textbox
-boxCorner.CornerRadius = UDim.new(0,6)
-
-local boxStroke = Instance.new("UIStroke")
-boxStroke.Parent = textbox
-boxStroke.Color = Color3.fromRGB(255,215,0)
+local boxCorner = Instance.new("UICorner", box)
+boxCorner.CornerRadius = UDim.new(0,8)
 
 local ok = Instance.new("TextButton")
 ok.Parent = frame
-ok.Size = UDim2.new(0,45,0,25)
-ok.Position = UDim2.new(0,225,0,22)
-ok.Text = "OK"
-ok.Font = Enum.Font.GothamBold
-ok.TextSize = 14
+ok.Size = UDim2.new(0.4,0,0,30)
+ok.Position = UDim2.new(0.3,0,0,95)
 ok.BackgroundColor3 = Color3.fromRGB(255,215,0)
+ok.Text = "OK"
 ok.TextColor3 = Color3.fromRGB(0,0,0)
+ok.Font = Enum.Font.GothamBold
+ok.TextScaled = true
 
-local okCorner = Instance.new("UICorner")
-okCorner.Parent = ok
-okCorner.CornerRadius = UDim.new(0,6)
+local okCorner = Instance.new("UICorner", ok)
+okCorner.CornerRadius = UDim.new(0,8)
 
-local result = Instance.new("TextLabel")
-result.Parent = frame
-result.BackgroundTransparency = 1
-result.Position = UDim2.new(0,45,0,15)
-result.Size = UDim2.new(1,-50,0,40)
-result.Font = Enum.Font.GothamBold
-result.TextSize = 15
-result.TextColor3 = Color3.fromRGB(255,255,255)
-result.TextWrapped = true
-result.TextXAlignment = Enum.TextXAlignment.Left
-result.Text = ""
+-- Hiển thị phía trên giữa màn hình
+local display = Instance.new("Frame")
+display.Parent = gui
+display.Size = UDim2.new(0,220,0,55)
+display.Position = UDim2.new(0.5,-110,0,10)
+display.BackgroundColor3 = Color3.fromRGB(15,15,15)
+display.BackgroundTransparency = 0.15
+display.Visible = false
+display.BorderSizePixel = 0
 
-local function ShowSaved()
-	local tenDon = LoadNameDon()
+local displayCorner = Instance.new("UICorner", display)
+displayCorner.CornerRadius = UDim.new(0,8)
 
-	if tenDon ~= "" then
-		result.Text = tenDon .. "\n" .. HideName(player.Name)
+local displayStroke = Instance.new("UIStroke", display)
+displayStroke.Color = Color3.fromRGB(255,215,0)
+displayStroke.Thickness = 1.5
 
-		title.Visible = false
-		textbox.Visible = false
-		ok.Visible = false
-	end
-end
-
-ShowSaved()
+local label = Instance.new("TextLabel")
+label.Parent = display
+label.Size = UDim2.new(1,0,1,0)
+label.BackgroundTransparency = 1
+label.TextColor3 = Color3.fromRGB(255,255,255)
+label.Font = Enum.Font.GothamBold
+label.TextScaled = true
 
 ok.MouseButton1Click:Connect(function()
-	local tenDon = textbox.Text
-
-	if tenDon == "" then
-		return
+	local don = box.Text
+	if don == "" then
+		don = "Chưa nhập"
 	end
 
-	SaveNameDon(tenDon)
+	local acc = string.sub(player.Name,1,3) .. "***"
 
-	result.Text = tenDon .. "\n" .. HideName(player.Name)
+	label.Text = "Đơn: "..don.."\nAcc: "..acc
 
-	title.Visible = false
-	textbox.Visible = false
-	ok.Visible = false
-end)
-
-edit.MouseButton1Click:Connect(function()
-	title.Visible = true
-	textbox.Visible = true
-	ok.Visible = true
-	textbox.Text = LoadNameDon()
-	result.Text = ""
+	frame.Visible = false
+	display.Visible = true
 end)
